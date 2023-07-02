@@ -34,8 +34,8 @@ function addCityToDOM(id, city, description, image) {
   ele.className = "col-6 col-lg-3 mb-4";
   ele.innerHTML = `
               <a href="pages/adventures/?city=${id}" id="${id}">
-                <div class="title">
-                  <div class="title-text text-center">
+                <div class="tile">
+                  <div class="tile-text text-center">
                     <h5>${city}</h5>
                     <p>${description}</p>
                   </div>
