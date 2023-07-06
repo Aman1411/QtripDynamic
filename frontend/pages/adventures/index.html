@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -140,26 +139,31 @@
             generateFilterPillsAndUpdateDOM(filters);
         })();
 
-
-        //executed when onChange() is triggered on duration filter dropdown
         function selectDuration(event) {
-            // TODO: MODULE_FILTERS
-            // 1. Change the DOM to show the selected duration filter. Use the provided input event
-            // 2. Invoke saveFiltersToLocalStorage here
+            // Change the DOM to show the selected duration filter
+            filters.duration = event.target.value;
+            saveFiltersToLocalStorage();
 
+            // Apply filters and update the DOM
+            let filteredAdventures = filterFunction(adventures, filters);
+            addAdventureToDOM(filteredAdventures);
         }
 
-        //executed when clear button is clicked on duration filter dropdown
+        // Executed when the clear button is clicked on the duration filter dropdown
         function clearDuration(event) {
-            // TODO: MODULE_FILTERS
-            // 1. Change the DOM to clear the Duration filter. Refer clearCategory() below
-            // 2. Invoke saveFiltersToLocalStorage here
+            // Clear the duration filter in the DOM
+            document.getElementById('duration-select').selectedIndex = 0;
 
+            // Clear the duration filter in the filters object
+            filters.duration = '';
+            saveFiltersToLocalStorage();
+
+            // Apply filters and update the DOM
+            let filteredAdventures = filterFunction(adventures, filters);
+            addAdventureToDOM(filteredAdventures);
         }
 
-
-
-        //executed when onChange() is triggered on category filter dropdown
+        // Executed when onChange() is triggered on the category filter dropdown
         function selectCategory(event) {
             document.getElementById("data").textContent = "";
             document.getElementById("category-list").textContent = "";
@@ -167,42 +171,40 @@
             let category = event.target.value;
             document.getElementById("category-select").selectedIndex = 0;
 
-            filters["category"].push(category);
-            filters["category"] = filters["category"].filter(onlyUnique);
-
+            filters.category.push(category);
+            filters.category = filters.category.filter(onlyUnique);
 
             generateFilterPillsAndUpdateDOM(filters);
             let filteredAdventures = filterFunction(adventures, filters);
             addAdventureToDOM(filteredAdventures);
 
-            // TODO: MODULE_FILTERS
-            // 1. Invoke saveFiltersToLocalStorage here
+            saveFiltersToLocalStorage(filters);
         }
 
-        //executed when clear button is clicked on category filter dropdown
+        // Executed when the clear button is clicked on the category filter dropdown
         function clearCategory(event) {
             document.getElementById("data").textContent = "";
             document.getElementById("category-list").textContent = "";
 
-            filters["category"] = [];
+            filters.category = [];
             let filteredAdventures = filterFunction(adventures, filters);
             addAdventureToDOM(filteredAdventures);
 
-            // TODO: MODULE_FILTERS
-            // 1. Invoke saveFiltersToLocalStorage here
+            saveFiltersToLocalStorage();
         }
 
-        //helper function
+        // Helper function
         function onlyUnique(value, index, self) {
             return self.indexOf(value) === index;
         }
 
-        //registering module based functions in the DOM in order for them to work
+        // Registering module-based functions in the DOM for them to work
         window.selectDuration = selectDuration;
         window.selectCategory = selectCategory;
         window.clearDuration = clearDuration;
         window.clearCategory = clearCategory;
-    </script>
-</body>
+     </script>
+ </body>
 
 </html>
+
