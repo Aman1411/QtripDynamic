@@ -17,7 +17,7 @@ describe("Landing Page Tests", function () {
 
   afterEach(() => {
     // restore the original func after test
-    jest.resetModules();
+    jest.resetModules()
     fetch.resetMocks();
   });
 

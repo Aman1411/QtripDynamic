@@ -61,6 +61,7 @@
                         <div class="ms-3" style="color: #0645ad; cursor: pointer" onclick="clearDuration(event)">
                             Clear
                         </div>
+                           
                     </div>
                     <!-- Category filter (select one or many) -->
                     <div class="filter-bar-tile d-flex align-items-center">
@@ -141,26 +142,27 @@
 
         function selectDuration(event) {
             // Change the DOM to show the selected duration filter
-            filters.duration = event.target.value;
-            saveFiltersToLocalStorage();
+            document.getElementById("data").textContent = "";
 
-            // Apply filters and update the DOM
-            let filteredAdventures = filterFunction(adventures, filters);
+            filters.duration = event.target.value;
+            let filteredAdventures = filterFunction(adventures,filters);
             addAdventureToDOM(filteredAdventures);
+            saveFiltersToLocalStorage();
         }
 
         // Executed when the clear button is clicked on the duration filter dropdown
         function clearDuration(event) {
             // Clear the duration filter in the DOM
-            document.getElementById('duration-select').selectedIndex = 0;
+            document.getElementById("data").textContent = "";
 
             // Clear the duration filter in the filters object
-            filters.duration = '';
+            filters.duration = "";
+            let filteredAdventures = filterFunction(adventures, filters);
+            addAdventureToDOM(filteredAdventures);
             saveFiltersToLocalStorage();
 
             // Apply filters and update the DOM
-            let filteredAdventures = filterFunction(adventures, filters);
-            addAdventureToDOM(filteredAdventures);
+            
         }
 
         // Executed when onChange() is triggered on the category filter dropdown
@@ -207,3 +209,5 @@
 </body>
 
 </html>
+
+
