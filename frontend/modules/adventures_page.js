@@ -1,5 +1,3 @@
-// Import the 'config' object from the "../conf/index.js" file
-// Make sure the path to the config file is correct based on your project structure
 import config from "../conf/index.js";
 
 //Implementation to extract city from query params
