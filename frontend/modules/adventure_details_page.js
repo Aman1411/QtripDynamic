@@ -52,7 +52,7 @@ function addAdventureDetailsToDOM(adventure) {
   // Create and append images to the photo gallery
   images.forEach(image => {
     const imageDiv = document.createElement('div');
-    imageDiv.classList.add('col-md-4', 'mb-3');
+    // imageDiv.classList.add('col-md-4', 'mb-3');
 
     const imageElement = document.createElement('img');
     imageElement.classList.add('activity-card-image');
@@ -69,30 +69,37 @@ function addAdventureDetailsToDOM(adventure) {
 
 //Implementation of bootstrap gallery component
 function addBootstrapPhotoGallery(images) {
-  const carouselIndicators = document.querySelector('#photo-gallery .carousel-indicators');
-  const carouselInner = document.querySelector('#photo-gallery .carousel-inner');
+ 
+  document.getElementById("photo-gallery").innerHTML = `
+  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+  `
 
   images.forEach((image, index) => {
     // Create indicator
-    const indicator = document.createElement('li');
-    indicator.setAttribute('data-bs-target', '#photo-gallery');
-    indicator.setAttribute('data-bs-slide-to', index.toString());
-    if (index === 0) {
-      indicator.classList.add('active');
-    }
-    carouselIndicators.appendChild(indicator);
-
-    // Create slide
-    const slide = document.createElement('div');
-    slide.classList.add('carousel-item');
-    if (index === 0) {
-      slide.classList.add('active');
-    }
-    const imageElement = document.createElement('img');
-    imageElement.classList.add('d-block', 'w-100');
-    imageElement.src = image;
-    slide.appendChild(imageElement);
-    carouselInner.appendChild(slide);
+    const ele =document.createElement("div");
+    const activeclass = index == 0 ? "active" : "";
+    ele.className = `carousel-item ${activeclass} `;
+    ele.innerHTML = `
+    <img src="${image}"  class="d-block w-100 carousel-img" alt="...">
+    `;
+    document.querySelector(".carousel-inner").appendChild(ele);
+  
   });
 }
 
@@ -101,6 +108,15 @@ function addBootstrapPhotoGallery(images) {
 function conditionalRenderingOfReservationPanel(adventure) {
   // TODO: MODULE_RESERVATIONS
   // 1. If the adventure is already reserved, display the sold-out message.
+  if(adventure.available){
+    document.getElementById("reservartion-panel-available").style.display = "block";
+    document.getElementById("reservartion-panel-sold-out").style.display = "none";
+    document.getElementById("reservartion-panel-cost").innerHTML = adventure.costPerHead;
+  }
+  else{
+    document.getElementById("reservartion-panel-available").style.display = "none";
+    document.getElementById("reservartion-panel-sold-out").style.display = "block";
+  }
 
 }
 
@@ -108,6 +124,7 @@ function conditionalRenderingOfReservationPanel(adventure) {
 function calculateReservationCostAndUpdateDOM(adventure, persons) {
   // TODO: MODULE_RESERVATIONS
   // 1. Calculate the cost based on number of persons and update the reservation-cost field
+  document.getElementById("reservartion-cost").innerHTML = persons * adventure.costPerHead;
 
 }
 
@@ -135,16 +152,4 @@ export {
   calculateReservationCostAndUpdateDOM,
   showBannerIfAlreadyReserved,
 };
-// let ele = document.createElement("div");
-//     ele.className = "col-lg-8";
-//     ele.innerHTML = ` 
-//           <div class = "adventure-detail-card">
-//             <div class = "adventure-name">${name}</div>
-//               <div class = "adventure-subtitle">${subtitle}</div>
-//                <div class ="
 
-                         
-
-//     `
-//     let div = document.getElementById("data");
-//     div.append(ele);
