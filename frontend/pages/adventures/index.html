@@ -61,7 +61,6 @@
                         <div class="ms-3" style="color: #0645ad; cursor: pointer" onclick="clearDuration(event)">
                             Clear
                         </div>
-                           
                     </div>
                     <!-- Category filter (select one or many) -->
                     <div class="filter-bar-tile d-flex align-items-center">
@@ -200,7 +199,7 @@
             return self.indexOf(value) === index;
         }
 
-        // Registering module-based functions in the DOM for them to work
+        //registering module based functions in the DOM in order for them to work
         window.selectDuration = selectDuration;
         window.selectCategory = selectCategory;
         window.clearDuration = clearDuration;

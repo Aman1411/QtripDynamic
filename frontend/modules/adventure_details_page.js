@@ -26,15 +26,10 @@ async function fetchAdventureDetails(adventureId) {
   // Place holder for functionality to work in the Stubs
   // return null;
 }
-
 //Implementation of DOM manipulation to add adventure details to DOM
-// function addAdventureDetailsToDOM(adventure) {
 //   // TODO: MODULE_ADVENTURE_DETAILS
 //   // 1. Add the details of the adventure to the HTML DOM
-//   adventure.forEach(({name, subtitle, images, content}) => {
-    
-//   });
-// }
+
 function addAdventureDetailsToDOM(adventure) {
   // Get HTML elements by their IDs
   const adventureName = document.getElementById('adventure-name');
@@ -109,13 +104,13 @@ function conditionalRenderingOfReservationPanel(adventure) {
   // TODO: MODULE_RESERVATIONS
   // 1. If the adventure is already reserved, display the sold-out message.
   if(adventure.available){
-    document.getElementById("reservartion-panel-available").style.display = "block";
-    document.getElementById("reservartion-panel-sold-out").style.display = "none";
-    document.getElementById("reservartion-panel-cost").innerHTML = adventure.costPerHead;
+    document.getElementById("reservation-panel-available").style.display = "block";
+    document.getElementById("reservation-panel-sold-out").style.display = "none";
+    document.getElementById("reservation-person-cost").innerHTML = adventure.costPerHead;
   }
   else{
-    document.getElementById("reservartion-panel-available").style.display = "none";
-    document.getElementById("reservartion-panel-sold-out").style.display = "block";
+    document.getElementById("reservation-panel-available").style.display = "none";
+    document.getElementById("reservation-panel-sold-out").style.display = "block";
   }
 
 }
@@ -124,7 +119,7 @@ function conditionalRenderingOfReservationPanel(adventure) {
 function calculateReservationCostAndUpdateDOM(adventure, persons) {
   // TODO: MODULE_RESERVATIONS
   // 1. Calculate the cost based on number of persons and update the reservation-cost field
-  document.getElementById("reservartion-cost").innerHTML = persons * adventure.costPerHead;
+  document.getElementById("reservation-cost").innerHTML = persons * adventure.costPerHead;
 
 }
 
@@ -133,13 +128,61 @@ function captureFormSubmit(adventure) {
   // TODO: MODULE_RESERVATIONS
   // 1. Capture the query details and make a POST API call using fetch() to make the reservation
   // 2. If the reservation is successful, show an alert with "Success!" and refresh the page. If the reservation fails, just show an alert with "Failed!".
+    const form = document.getElementById('myForm');
+  
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault(); // Prevent the default form submission
+      let url = config.backendEndpoint + "/reservations/new";
+  
+      // // Add the adventure ID to the form data
+      // formData.append('adventure', adventure);
+      let formElements = form.elements;
+
+      let bodyString = JSON.stringify({
+        name: formElements["name"].value,
+        date: formElements["date"].value,
+        person: formElements["person"].value,
+        adventure: adventure.id,
+      });
+  
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          body: bodyString,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+         
+        debugger;
+        if (response.ok) {
+          // Reservation successful
+          alert('Success!');
+          window.location.reload(); // Refresh the page
+        } else {
+          // Reservation failed
+          let data = await response.json();
+          alert(`Failed! - ${data.message}`);
+        }
+      } catch (err) {
+        console.log(err);
+        alert('Failed! - fetch call resulted in error');
+      }
+    });
 }
 
 //Implementation of success banner after reservation
-function showBannerIfAlreadyReserved(adventure) {
-  // TODO: MODULE_RESERVATIONS
-  // 1. If user has already reserved this adventure, show the reserved-banner, else don't
+function showBannerIfAlreadyReserved(adventure){
+  //TODO: MODULE_RESERVATIONS
+  //1.If user has already reserved this adventure ,show reserve-banneer else
 
+    //CRIO_SOLUTION_START_MODULE_ADVENTURE_DETAILS
+  if(adventure.reserved){
+    document.getElementById("reserved-banner").style.display ="block";
+  }else{
+    document.getElementById("reserved-banner").style.display ="none";
+  }
+  //CRIO_SOLUTION_END_MODULE_ADVENTURE_DETAILS
 }
 
 export {
@@ -152,4 +195,3 @@ export {
   calculateReservationCostAndUpdateDOM,
   showBannerIfAlreadyReserved,
 };
-
